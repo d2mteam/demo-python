@@ -16,6 +16,21 @@ Demo YOLOv1 phục vụ học tập với kiến trúc **khai báo bằng config
     └── utils.py
 ```
 
+## Hướng dẫn nhanh về các thành phần code
+- `configs/yolov1.yaml`: khai báo **kiến trúc** backbone (danh sách block) và **tham số** `S/B/C`, loss weights, dataset.
+- `yolo/config.py`: đọc config YAML/JSON (`load_config`).
+- `yolo/model.py`: build model động từ config:
+  - `_build_layers` xử lý block `conv`, `maxpool`, `repeat`.
+  - `YoloV1` tạo backbone + head FC, output shape `S x S x (C + 5B)`.
+- `yolo/data.py`:
+  - `VOCDataset` / `CocoDataset` lấy ảnh + annotation và encode target.
+  - `encode_targets` chuyển bbox normalized sang cell-local `x_cell/y_cell`.
+  - `decode_predictions` đưa output về bbox normalized toàn ảnh.
+- `yolo/loss.py`: `YoloV1Loss` implement đầy đủ coord/object/noobj/class loss theo YOLOv1 (IoU chọn box chịu trách nhiệm).
+- `yolo/utils.py`: `compute_iou`, `non_max_suppression`, và dataclass `Detection`.
+- `train.py`: CLI huấn luyện, cho phép override `S/B/C` và loss weights.
+- `infer.py`: CLI inference + NMS + lưu ảnh visualize.
+
 ## Cài đặt
 ```
 pip install torch torchvision pyyaml pillow
