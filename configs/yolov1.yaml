@@ -1,0 +1,189 @@
+model:
+  input_channels: 3
+  architecture:
+    - type: conv
+      in_channels: 3
+      out_channels: 64
+      kernel_size: 7
+      stride: 2
+      padding: 3
+      batchnorm: true
+      activation: leaky_relu
+    - type: maxpool
+      kernel_size: 2
+      stride: 2
+    - type: conv
+      in_channels: 64
+      out_channels: 192
+      kernel_size: 3
+      stride: 1
+      padding: 1
+      batchnorm: true
+      activation: leaky_relu
+    - type: maxpool
+      kernel_size: 2
+      stride: 2
+    - type: conv
+      in_channels: 192
+      out_channels: 128
+      kernel_size: 1
+      stride: 1
+      padding: 0
+      batchnorm: true
+      activation: leaky_relu
+    - type: conv
+      in_channels: 128
+      out_channels: 256
+      kernel_size: 3
+      stride: 1
+      padding: 1
+      batchnorm: true
+      activation: leaky_relu
+    - type: conv
+      in_channels: 256
+      out_channels: 256
+      kernel_size: 1
+      stride: 1
+      padding: 0
+      batchnorm: true
+      activation: leaky_relu
+    - type: conv
+      in_channels: 256
+      out_channels: 512
+      kernel_size: 3
+      stride: 1
+      padding: 1
+      batchnorm: true
+      activation: leaky_relu
+    - type: maxpool
+      kernel_size: 2
+      stride: 2
+    - type: repeat
+      repeats: 4
+      blocks:
+        - type: conv
+          in_channels: 512
+          out_channels: 256
+          kernel_size: 1
+          stride: 1
+          padding: 0
+          batchnorm: true
+          activation: leaky_relu
+        - type: conv
+          in_channels: 256
+          out_channels: 512
+          kernel_size: 3
+          stride: 1
+          padding: 1
+          batchnorm: true
+          activation: leaky_relu
+    - type: conv
+      in_channels: 512
+      out_channels: 512
+      kernel_size: 1
+      stride: 1
+      padding: 0
+      batchnorm: true
+      activation: leaky_relu
+    - type: conv
+      in_channels: 512
+      out_channels: 1024
+      kernel_size: 3
+      stride: 1
+      padding: 1
+      batchnorm: true
+      activation: leaky_relu
+    - type: maxpool
+      kernel_size: 2
+      stride: 2
+    - type: repeat
+      repeats: 2
+      blocks:
+        - type: conv
+          in_channels: 1024
+          out_channels: 512
+          kernel_size: 1
+          stride: 1
+          padding: 0
+          batchnorm: true
+          activation: leaky_relu
+        - type: conv
+          in_channels: 512
+          out_channels: 1024
+          kernel_size: 3
+          stride: 1
+          padding: 1
+          batchnorm: true
+          activation: leaky_relu
+    - type: conv
+      in_channels: 1024
+      out_channels: 1024
+      kernel_size: 3
+      stride: 1
+      padding: 1
+      batchnorm: true
+      activation: leaky_relu
+    - type: conv
+      in_channels: 1024
+      out_channels: 1024
+      kernel_size: 3
+      stride: 2
+      padding: 1
+      batchnorm: true
+      activation: leaky_relu
+    - type: conv
+      in_channels: 1024
+      out_channels: 1024
+      kernel_size: 3
+      stride: 1
+      padding: 1
+      batchnorm: true
+      activation: leaky_relu
+    - type: conv
+      in_channels: 1024
+      out_channels: 1024
+      kernel_size: 3
+      stride: 1
+      padding: 1
+      batchnorm: true
+      activation: leaky_relu
+  head:
+    fc_hidden: 4096
+    dropout: 0.5
+
+data:
+  image_size: 448
+  S: 7
+  B: 2
+  C: 20
+  loss_weights:
+    coord: 5.0
+    noobj: 0.5
+    obj: 1.0
+    class: 1.0
+  dataset:
+    type: voc
+    root: ./data/VOCdevkit
+    year: "2012"
+    image_set: train
+    classes:
+      - aeroplane
+      - bicycle
+      - bird
+      - boat
+      - bottle
+      - bus
+      - car
+      - cat
+      - chair
+      - cow
+      - diningtable
+      - dog
+      - horse
+      - motorbike
+      - person
+      - pottedplant
+      - sheep
+      - sofa
+      - train
+      - tvmonitor
